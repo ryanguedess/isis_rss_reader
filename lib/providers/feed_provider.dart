@@ -1,40 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart';
+import 'package:rss_reader/data/article_repository.dart';
 import 'package:rss_reader/data/feed_repository.dart';
 import 'package:rss_reader/model/feed.dart';
 import 'package:rss_reader/networking/rss_feed_api.dart';
 import 'package:rss_reader/utils/utils.dart';
-import 'package:webfeed/domain/rss_feed.dart';
+
 import '../model/article.dart';
-import 'package:http/http.dart' as http;
 
 class FeedProvider extends ChangeNotifier {
 
-  FeedProvider(this.rssFeedApi, this.feedRepository);
+  FeedProvider(this.rssFeedApi, this.feedRepository) {
+    loadFeeds();
+  }
 
   final FeedRepository feedRepository;
   final RssFeedApi rssFeedApi;
 
   List<Article> articles = [];
 
-  List<Feed> subscribedFeedList = [
-    Feed(
-        description: "Google news, Pixel, Android, Home, Chrome OS, more",
-        favIconUrl: 'https://9to5google.com/favicon.ico',
-        isPodcast: false,
-        siteName: "9to5google.com",
-        url: "https://9to5google.com/feed/",
-        title: "9to5Google",
-        siteUrl: 'https://9to5google.com/feed/'),
-    // Feed(
-    //     siteName:
-    //         "Android Authority: Tech Reviews, News, Buyer's Guides, Deals, How-To",
-    //     description: "Android News, Reviews, How To",
-    //     url: "https://www.androidauthority.com/feed/",
-    //     favIconUrl: 'https://www.androidauthority.com/favicon.ico',
-    //     siteUrl: 'https://www.androidauthority.com'),
-  ];
+  List<Feed> subscribedFeedList = [];
 
+  Future<void> loadArticles (String rssLink) async {
+    var articles = await rssFeedApi.getArticles(rssLink);
+    articles.forEach((article) => ArticleRepository.instance.insert(article));
+  }
 
   Future<void> loadFeeds() async {
     subscribedFeedList = await feedRepository.getAll();

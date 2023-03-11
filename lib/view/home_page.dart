@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rss_reader/data/article_repository.dart';
 import 'package:rss_reader/model/article.dart';
 import 'package:rss_reader/providers/feed_provider.dart';
 import 'package:rss_reader/widgets/composed_card.dart';
 import 'package:rss_reader/widgets/shimmer_loading.dart';
+
+import '../providers/articles_provider.dart';
 
 class FeedPageHome extends StatelessWidget {
   const FeedPageHome({Key? key}) : super(key: key);
@@ -15,7 +18,7 @@ class FeedPageHome extends StatelessWidget {
     return Consumer<FeedProvider>(
       builder: (context, feedProvider, child) => Scaffold(
         body: FutureBuilder(
-          future: feedProvider.getArticlesSeparateByDate(),
+          future: ArticleProvider(ArticleRepository.instance).listArticlesByDate(interval: 7),
           builder: (context,
               AsyncSnapshot<List<Map<String, List<Article>>>> snapshot) {
             if (snapshot.hasData) {
@@ -35,9 +38,9 @@ class FeedPageHome extends StatelessWidget {
                             Text(
                               'Home Page',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
-                            Text('\sort by date', style: Theme.of(context).textTheme.headline6,)
+                            Text('\sort by date', style: Theme.of(context).textTheme.titleLarge,)
                           ],
                         ),
                       ),

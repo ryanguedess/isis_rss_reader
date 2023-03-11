@@ -29,28 +29,28 @@ class _ArticlePageState extends State<ArticlePage> {
         ),
         body: Stack(
           children: [
-            WebView(
-              initialUrl: widget.url,
-              onWebViewCreated: (webViewController) {
-                widget.controller.complete(webViewController);
-                controller = webViewController;
-              },
-              onPageStarted: (url) {
-                setState(() {
-                  loadingPercentage = 0;
-                });
-              },
-              onProgress: (progress) {
-                setState(() {
-                  loadingPercentage = progress;
-                });
-              },
-              onPageFinished: (url) {
-                setState(() {
-                  loadingPercentage = 100;
-                });
-              },
-            ),
+            // WebView(
+            //   initialUrl: widget.url,
+            //   onWebViewCreated: (webViewController) {
+            //     widget.controller.complete(webViewController);
+            //     controller = webViewController;
+            //   },
+            //   onPageStarted: (url) {
+            //     setState(() {
+            //       loadingPercentage = 0;
+            //     });
+            //   },
+            //   onProgress: (progress) {
+            //     setState(() {
+            //       loadingPercentage = progress;
+            //     });
+            //   },
+            //   onPageFinished: (url) {
+            //     setState(() {
+            //       loadingPercentage = 100;
+            //     });
+            //   },
+            // ),
             if (loadingPercentage < 100)
               LinearProgressIndicator(
                 value: loadingPercentage / 100.0,
@@ -60,7 +60,7 @@ class _ArticlePageState extends State<ArticlePage> {
         floatingActionButton: NextArticlesButton(
           onTap: (article) {
             setState(() {
-              controller.loadUrl(article.link);
+              //controller.loadUrl(article.link);
               Navigator.pop(context);
             });
           },

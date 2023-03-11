@@ -16,13 +16,22 @@ class FeedMenuItem extends StatelessWidget {
       onLongPress: onLongPress,
       onTap: onTap,
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        SizedBox(
-            height: 30,
-            child: FeedIcon(feed: feed,)),
-        Text(
-          '${feed.title.substring(0, feed.title.length < 20 ? feed.title.length : 20)}${feed.title.length < 20 ? '' : '...'}',
+        Flexible(
+          child: SizedBox(
+              height: 30,
+              child: FeedIcon(feed: feed,)),
         ),
-        const Icon(Icons.arrow_forward_ios)
+        Flexible(
+          flex: 8,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(feed.title, style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.center,)
+            /*Text(
+              '${feed.title.substring(0, feed.title.length < 20 ? feed.title.length : 20)}${feed.title.length < 20 ? '' : '...'}',
+            )*/,
+          ),
+        ),
+        Flexible(child: const Icon(Icons.arrow_forward_ios))
       ]),
     );
   }

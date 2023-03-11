@@ -10,6 +10,18 @@ class ArticleProvider extends ChangeNotifier {
 
   ArticleRepository articleRepository;
 
+  Future<List<Map<String, List<Article>>>> listArticlesByDate({int interval = 1}) async {
+    var now = DateTime.now();
+    List<Map<String, List<Article>>> articlesByDate = [];
+    for (var i = 0; i <= interval; ++i) {
+      var start = DateTime(now.year, now.month, now.day, 00, 00, 00, 000, 000).subtract(Duration(days: i));
+      var end = DateTime(now.year, now.month, now.day, 23, 59, 59, 999, 999).subtract(Duration(days: i));
+      var articles = await articleRepository.listByDate(start, end);
+      if (articles.length > 0) articlesByDate.add({'${start.day}/${start.month}/${start.year}' : articles});
+    }
+    return articlesByDate;
+  }
+
   Future<List<Article>> getAll() {
     return articleRepository.getAll();
   }

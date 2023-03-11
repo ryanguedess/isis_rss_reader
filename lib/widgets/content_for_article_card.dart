@@ -14,6 +14,7 @@ class ContentForArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return GestureDetector(
       onTap: () => ReaderModeArticlePage.show(context, article),
       child: Padding(
@@ -22,34 +23,41 @@ class ContentForArticleCard extends StatelessWidget {
           children: [
             Column(
               children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: article.hasImage()
-                        ? FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: article.image!,
-                      width: 130,
-                      height: 90,
-                      fit: BoxFit.fitHeight,
-                    )
-                        : SizedBox(
-                      width: 130,
-                      height: 90,
-                      child: Container(
-                        color:
-                        Theme.of(context).colorScheme.primary,
-                        child: const Icon(Icons.newspaper, size: 60,),
-                      ),
-                    ),
-                  ),
-
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: article.hasImage()
+                      ? FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: article.image!,
+                          width: 130,
+                          height: 90,
+                          fit: BoxFit.fitHeight,
+                        )
+                      : SizedBox(
+                          width: 130,
+                          height: 90,
+                          child: Container(
+                            color: theme.colorScheme.primary,
+                            child: const Icon(
+                              Icons.newspaper,
+                              size: 60,
+                            ),
+                          ),
+                        ),
+                ),
               ],
             ),
             Flexible(
               child: ListTile(
-                title: Text(article.title),
+                title: Text(
+                  article.title,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelMedium,
+                ),
                 subtitle: Text(
                   '${article.getTime()} - ${article.publisher}',
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ),

@@ -56,6 +56,21 @@ class ArticleRepository {
     ''');
   }
 
+  Future<List<Article>> listByDate(DateTime start, DateTime end) async {
+    final db = await instance.database;
+    final maps = await db.query(
+        articleTable,
+        columns: ArticleFields.columns,
+        where: 'pubdate between ? AND ? ',
+        whereArgs: [start.toIso8601String(), end.toIso8601String()]
+    );
+    if (maps.isNotEmpty) {
+      return maps.map((record) => Article.fromMap(record)).toList();
+    } else {
+      return [];
+    }
+  }
+
   Future<List<Article>> getAll() async {
     final db = await instance.database;
     final maps = await db.query(articleTable, columns: ArticleFields.columns);

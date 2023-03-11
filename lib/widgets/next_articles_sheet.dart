@@ -46,7 +46,7 @@ class NextArticles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var articles = Provider.of<FeedProvider>(context).articles..shuffle;
-    var nextArticles = articles.sublist(0,4);
+    var nextArticles = articles.sublist(0,4 > articles.length ? articles.length : 4);
 
     return Column(children: [
       const Text('Next articles:', style: TextStyle(fontWeight: FontWeight.bold),),
